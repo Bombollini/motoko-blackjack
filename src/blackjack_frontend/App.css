@@ -1,0 +1,378 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
+  color: #ffffff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Modern Background Pattern */
+.modern-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, 0.02) 50%, transparent 51%);
+  pointer-events: none;
+}
+
+/* Button Styles */
+.btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  color: #000000;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #ff6666 0%, #dd1111 100%);
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+  color: #000000;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #22ff99 0%, #11dd77 100%);
+  transform: translateY(-2px);
+}
+
+/* Card Styles - Much Larger */
+.card {
+  width: 120px;
+  height: 168px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  margin: 0 8px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.card:hover {
+  transform: translateY(-8px) rotateX(5deg);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.card-back {
+  background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.card-suit {
+  font-size: 40px;
+  text-align: center;
+  margin: 8px 0;
+}
+
+.card-red {
+  color: #dc2626;
+}
+
+.card-black {
+  color: #000000;
+}
+
+/* HP Bar */
+.hp-bar {
+  width: 300px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+}
+
+/* Animations */
+@keyframes cardDeal {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) rotateY(180deg) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-20px) rotateY(90deg) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes cardFlip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.card-deal {
+  animation: cardDeal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-flip {
+  animation: cardFlip 0.6s ease-in-out;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  animation: glow 2s infinite;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  min-width: 400px;
+  backdrop-filter: blur(20px);
+}
+
+.modal h3 {
+  color: #ffffff;
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.modal input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card {
+    width: 100px;
+    height: 140px;
+    padding: 10px;
+  }
+  
+  .card-suit {
+    font-size: 32px;
+  }
+  
+  .card-value {
+    font-size: 16px;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+  
+  .hp-bar {
+    width: 200px;
+  }
+  
+  .modal {
+    min-width: 320px;
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 80px;
+    height: 112px;
+    padding: 8px;
+  }
+  
+  .card-suit {
+    font-size: 24px;
+  }
+  
+  .card-value {
+    font-size: 14px;
+  }
+}

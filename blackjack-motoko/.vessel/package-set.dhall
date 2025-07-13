@@ -1,0 +1,3 @@
+let package-set = { name = "blackjack-motoko", version = "0.1.0", packages = [ { name = "base", version = "0.1.0" }, { name = "mo:base/HashMap", version = "0.1.0" }, { name = "mo:base/Text", version = "0.1.0" }, { name = "mo:base/Principal", version = "0.1.0" }, { name = "mo:base/Array", version = "0.1.0" }, { name = "mo:base/Time", version = "0.1.0" }, { name = "mo:base/Debug", version = "0.1.0" }, { name = "mo:base/Iter", version = "0.1.0" }, { name = "mo:base/Random", version = "0.1.0" }, { name = "mo:base/Nat", version = "0.1.0" }, { name = "mo:base/Nat8", version = "0.1.0" }, { name = "mo:base/Int", version = "0.1.0" }, { name = "mo:base/Buffer", version = "0.1.0" } ] };
+
+in package-set

@@ -1,0 +1,36 @@
+{
+  "canisters": {
+    "internet_identity": {
+      "type": "custom",
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "frontend": {}
+    },
+    "blackjack_backend": {
+      "main": "src/blackjack_backend/main.mo",
+      "type": "motoko"
+    },
+    "blackjack_frontend": {
+      "dependencies": [
+        "blackjack_backend"
+      ],
+      "source": [
+        "src/blackjack_frontend/dist"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

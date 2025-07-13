@@ -9,10 +9,11 @@
 
 ---
 
-## 🎮 Fitur Utama
+## 🎮 Main Features
 
 ### 🎯 **Full Backend Game Logic (Motoko)**
-- **Deck shuffling** with Fisher-Yates algorithm
+- **Modular architecture** with separate modules for types, deck, game logic
+- **Deck shuffling** with Fisher-Yates algorithm and time-based randomness
 - **Dealer AI** following standard blackjack rules (hit until 17+)
 - **Automatic card calculation** with Ace handling (1 or 11)
 - **Blackjack detection** and 1.5x payout
@@ -32,18 +33,16 @@
 - **Automatic HP reset** for each new game
 - **Game over validation** when HP reaches 0
 
-### 🏆 **User Profile & Statistics**
-- **Persistent user profiles** with Internet Identity
-- **Win/Loss tracking** per user
-- **Total games played** statistics
-- **Last active** timestamps
-- **Leaderboard ready** data structure
+### 📊 **Simple Statistics Tracking**
+- **Win/Loss tracking** via Internet Identity authentication
+- **Persistent stats** stored on Internet Computer
+- **Backend-managed statistics** with automatic updates
+- **Clean and minimal UI** focused on gameplay
 
 ### 🎪 **Advanced Game Features**
 - **Double Down** with bet doubling
 - **Surrender** with half-bet loss
-- **Split** (coming soon)
-- **Insurance** (coming soon)
+- **Split** (placeholder for future implementation)
 - **Game Over delay** to view final dealer cards
 
 ---
@@ -91,6 +90,13 @@ npm run dev
 
 ### Backend (Motoko)
 ```motoko
+// Modular architecture
+lib/
+├── types.mo      // Shared type definitions
+├── deck.mo       // Card deck operations  
+├── game.mo       // Core game logic
+└── profile.mo    // [Removed - simplified stats only]
+
 // Core data structures
 type Card = { suit: Text; value: Nat };
 type GameState = {
@@ -101,28 +107,35 @@ type GameState = {
   gamePhase: Text;
   // ... more fields
 };
+type PlayerStats = {
+  totalWins: Nat;
+  totalLoses: Nat;
+  totalGames: Nat;
+};
 
 // Main game functions
 public func createGame(initialHP: Nat) : async ?GameState
 public func performGameAction(action: GameAction) : async ?GameResult
 public func getGameState() : async ?GameState
+public func getPlayerStats() : async PlayerStats
 ```
 
 ### Frontend (React + Vite)
 ```javascript
-// Component structure
+// Simplified component structure
 App.jsx
-├── MainMenu.jsx
-├── Profile.jsx
-├── GameTable.jsx
-│   ├── Card.jsx
-│   ├── BetModal.jsx
-│   └── ResultModal.jsx
-└── GameOver.jsx
+├── MainMenu.jsx        // Main menu with stats display
+├── GameTable.jsx       // Main game interface
+│   ├── Card.jsx        // Card component
+│   ├── BetModal.jsx    // Betting modal
+│   └── ResultModal.jsx // Result display
+├── GameOver.jsx        // Game over screen
+└── HowToPlay.jsx       // Game instructions
 
 // State management
 - AuthContext (Internet Identity)
 - Game state via backend calls
+- Simple stats tracking (wins/losses)
 - Local UI state (React hooks)
 ```
 
@@ -134,7 +147,11 @@ App.jsx
 📁 motoko-blackjack/
 ├── 📁 src/
 │   ├── 📁 blackjack_backend/
-│   │   └── 📄 main.mo              # Motoko backend logic
+│   │   ├── 📄 main.mo              # Main actor and coordinator
+│   │   └── 📁 lib/                 # Modular backend architecture
+│   │       ├── 📄 types.mo         # Shared type definitions
+│   │       ├── 📄 deck.mo          # Card deck operations
+│   │       └── 📄 game.mo          # Core game logic
 │   ├── 📁 blackjack_frontend/
 │   │   ├── 📄 App.jsx              # Main React app
 │   │   ├── 📄 App.css              # Global styles
@@ -145,14 +162,14 @@ App.jsx
 │   │   │   ├── 📄 Card.jsx         # Card component
 │   │   │   ├── 📄 BetModal.jsx     # Betting modal
 │   │   │   ├── 📄 ResultModal.jsx  # Result display
-│   │   │   ├── 📄 MainMenu.jsx     # Main menu
-│   │   │   ├── 📄 Profile.jsx      # User profile
+│   │   │   ├── 📄 MainMenu.jsx     # Main menu with stats
+│   │   │   ├── 📄 HowToPlay.jsx    # Game instructions
 │   │   │   └── 📄 GameOver.jsx     # Game over screen
 │   │   ├── 📁 contexts/
 │   │   │   └── 📄 AuthContext.jsx  # Auth state management
 │   │   └── 📁 utils/
 │   │       ├── 📄 actor.js         # Canister interaction
-│   │       └── 📄 backendUtils.js  # Response parsing
+│   │       └── 📄 gameLogic.js     # Frontend game utilities
 │   └── 📁 declarations/            # Auto-generated canister bindings
 ├── 📄 dfx.json                     # DFX configuration
 ├── 📄 package.json                 # NPM dependencies
@@ -165,16 +182,15 @@ App.jsx
 
 ## 🎯 Game Flow
 
-1. **User Authentication** via Internet Identity
-2. **Profile Creation** (first time users)
-3. **Game Creation** with HP = 100
-4. **Bet Placement** (5-50 HP, or All-in)
-5. **Card Dealing** (2 cards each)
-6. **Player Actions** (Hit, Stand, Double Down, Surrender)
-7. **Dealer Play** (automatic until 17+)
-8. **Result Calculation** & HP update
-9. **Stats Update** (wins/losses)
-10. **Next Round** or **Game Over**
+1. **User Authentication** via Internet Identity (optional for stats)
+2. **Game Creation** with HP = 100
+3. **Bet Placement** (5-50 HP, or All-in)
+4. **Card Dealing** (2 cards each)
+5. **Player Actions** (Hit, Stand, Double Down, Surrender)
+6. **Dealer Play** (automatic until 17+)
+7. **Result Calculation** & HP update
+8. **Stats Update** (wins/losses) - if authenticated
+9. **Next Round** or **Game Over**
 
 ---
 
@@ -228,6 +244,28 @@ dfx deploy
 ```bash
 dfx deploy --network ic
 ```
+
+---
+
+## 🎮 Game Features
+
+### ✅ **Implemented**
+- Full blackjack game logic with Motoko backend
+- HP-based betting system
+- Internet Identity authentication
+- Win/Loss statistics tracking
+- Responsive React frontend
+- Double Down and Surrender actions
+- Automatic dealer play
+- Game over detection
+
+### 🚧 **Future Enhancements**
+- Split functionality (currently placeholder)
+- Insurance bets
+- Multiple deck support
+- Tournament mode
+- Sound effects and animations
+- Leaderboard system
 
 ---
 

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Play, HelpCircle, User, Trophy, Settings, LogIn, LogOut } from 'lucide-react'
+import { Play, HelpCircle, Trophy, Settings, LogIn, LogOut, User } from 'lucide-react'
 import HowToPlay from './HowToPlay'
 import { useAuth } from '../contexts/AuthContext'
 
-const MainMenu = ({ onStartGame, onShowProfile, playerStats }) => {
+const MainMenu = ({ onStartGame, playerStats }) => {
   const [showHowToPlay, setShowHowToPlay] = useState(false)
   const { isAuthenticated, login, logout, isLoading } = useAuth()
 
@@ -123,14 +123,6 @@ const MainMenu = ({ onStartGame, onShowProfile, playerStats }) => {
               Start Game
             </button>
           )}
-          
-          <button 
-            className="btn btn-secondary"
-            onClick={onShowProfile}
-          >
-            <User size={20} />
-            Profile
-          </button>
           
           <button 
             className="btn btn-secondary"

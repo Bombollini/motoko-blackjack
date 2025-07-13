@@ -1,59 +1,264 @@
-# `blackjack`
+# 🃏 Motoko Blackjack
 
-Welcome to your new `blackjack` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+> Full-stack decentralized Blackjack game built with **Motoko** (Internet Computer) for backend logic and **React + Vite** for the frontend.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Motoko](https://img.shields.io/badge/backend-Motoko-orange.svg)
+![React](https://img.shields.io/badge/frontend-React-blue.svg)
+![Internet Computer](https://img.shields.io/badge/platform-Internet%20Computer-purple.svg)
 
-To learn more before you start working with `blackjack`, see the following documentation available online:
+---
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/motoko/main/motoko)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/motoko/main/language-manual)
+## 🎮 Fitur Utama
 
-If you want to start working on your project right away, you might want to try the following commands:
+### 🎯 **Full Backend Game Logic (Motoko)**
+- **Deck shuffling** with Fisher-Yates algorithm
+- **Dealer AI** following standard blackjack rules (hit until 17+)
+- **Automatic card calculation** with Ace handling (1 or 11)
+- **Blackjack detection** and 1.5x payout
+- **Safe and immutable game state validation**
 
+### 🎨 **Modern Frontend (React + Vite)**
+- **Responsive UI** with smooth card animations
+- **Real-time updates** from backend canister
+- **Modern glassmorphism design** with dark theme
+- **Mobile-friendly** interface
+- **Sound effects** and visual feedback
+
+### ⚡ **HP System**
+- Each player starts with **100 HP**
+- **Betting system** with HP as currency
+- **Dynamic bet amounts** (5, 10, 25, 50, All-in)
+- **Automatic HP reset** for each new game
+- **Game over validation** when HP reaches 0
+
+### 🏆 **User Profile & Statistics**
+- **Persistent user profiles** with Internet Identity
+- **Win/Loss tracking** per user
+- **Total games played** statistics
+- **Last active** timestamps
+- **Leaderboard ready** data structure
+
+### 🎪 **Advanced Game Features**
+- **Double Down** with bet doubling
+- **Surrender** with half-bet loss
+- **Split** (coming soon)
+- **Insurance** (coming soon)
+- **Game Over delay** to view final dealer cards
+
+---
+
+## 🚀 How to Run Locally
+
+### Prerequisites
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (v0.15.0+)
+- [Node.js](https://nodejs.org/) (v18+)
+- [Git](https://git-scm.com/)
+
+### 1. **Clone Repository**
 ```bash
-cd blackjack/
-dfx help
-dfx canister --help
+git clone https://github.com/Bombollini/motoko-blackjack.git
+cd motoko-blackjack
 ```
 
-## Running the project locally
-
-If you want to test your project locally, you can use the following commands:
-
+### 2. **Start Local Internet Computer Replica**
 ```bash
-# Starts the replica, running in the background
 dfx start --background
+```
 
-# Deploys your canisters to the replica and generates your candid interface
+### 3. **Deploy Backend Canister**
+```bash
+dfx deploy blackjack_backend
+```
+
+### 4. **Install Frontend Dependencies**
+```bash
+npm install
+```
+
+### 5. **Start Development Server**
+```bash
+npm run dev
+```
+
+### 6. **Access Application**
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend Candid UI**: [http://localhost:4943/?canisterId=...](http://localhost:4943) (see deploy output)
+
+---
+
+## 🏗️ Technical Architecture
+
+### Backend (Motoko)
+```motoko
+// Core data structures
+type Card = { suit: Text; value: Nat };
+type GameState = {
+  playerHand: [Card];
+  dealerHand: [Card];
+  playerHP: Nat;
+  currentBet: Nat;
+  gamePhase: Text;
+  // ... more fields
+};
+
+// Main game functions
+public func createGame(initialHP: Nat) : async ?GameState
+public func performGameAction(action: GameAction) : async ?GameResult
+public func getGameState() : async ?GameState
+```
+
+### Frontend (React + Vite)
+```javascript
+// Component structure
+App.jsx
+├── MainMenu.jsx
+├── Profile.jsx
+├── GameTable.jsx
+│   ├── Card.jsx
+│   ├── BetModal.jsx
+│   └── ResultModal.jsx
+└── GameOver.jsx
+
+// State management
+- AuthContext (Internet Identity)
+- Game state via backend calls
+- Local UI state (React hooks)
+```
+
+---
+
+## 📂 Project Structure
+
+```
+📁 motoko-blackjack/
+├── 📁 src/
+│   ├── 📁 blackjack_backend/
+│   │   └── 📄 main.mo              # Motoko backend logic
+│   ├── 📁 blackjack_frontend/
+│   │   ├── 📄 App.jsx              # Main React app
+│   │   ├── 📄 App.css              # Global styles
+│   │   ├── 📄 index.html           # HTML template
+│   │   ├── 📄 main.jsx             # React entry point
+│   │   ├── 📁 components/          # React components
+│   │   │   ├── 📄 GameTable.jsx    # Main game interface
+│   │   │   ├── 📄 Card.jsx         # Card component
+│   │   │   ├── 📄 BetModal.jsx     # Betting modal
+│   │   │   ├── 📄 ResultModal.jsx  # Result display
+│   │   │   ├── 📄 MainMenu.jsx     # Main menu
+│   │   │   ├── 📄 Profile.jsx      # User profile
+│   │   │   └── 📄 GameOver.jsx     # Game over screen
+│   │   ├── 📁 contexts/
+│   │   │   └── 📄 AuthContext.jsx  # Auth state management
+│   │   └── 📁 utils/
+│   │       ├── 📄 actor.js         # Canister interaction
+│   │       └── 📄 backendUtils.js  # Response parsing
+│   └── 📁 declarations/            # Auto-generated canister bindings
+├── 📄 dfx.json                     # DFX configuration
+├── 📄 package.json                 # NPM dependencies
+├── 📄 vite.config.js               # Vite configuration
+├── 📄 tsconfig.json                # TypeScript config
+└── 📄 README.md                    # This file
+```
+
+---
+
+## 🎯 Game Flow
+
+1. **User Authentication** via Internet Identity
+2. **Profile Creation** (first time users)
+3. **Game Creation** with HP = 100
+4. **Bet Placement** (5-50 HP, or All-in)
+5. **Card Dealing** (2 cards each)
+6. **Player Actions** (Hit, Stand, Double Down, Surrender)
+7. **Dealer Play** (automatic until 17+)
+8. **Result Calculation** & HP update
+9. **Stats Update** (wins/losses)
+10. **Next Round** or **Game Over**
+
+---
+
+## 🛠️ Development
+
+### Backend Development
+```bash
+# Deploy backend only
+dfx deploy blackjack_backend
+
+# Check backend logs
+dfx canister logs blackjack_backend
+
+# Reset backend state
+dfx canister uninstall-code blackjack_backend
+dfx deploy blackjack_backend
+```
+
+### Frontend Development
+```bash
+# Development server with hot reload
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Testing
+```bash
+# Run frontend tests
+npm test
+
+# Backend testing via Candid UI
+# Navigate to: http://localhost:4943/?canisterId=...
+```
+
+---
+
+## 🌐 Deployment
+
+### Local Deployment
+```bash
+dfx start --background
 dfx deploy
 ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-
-If you have made changes to your backend canister, you can generate a new candid interface with
-
+### IC Mainnet Deployment
 ```bash
-npm run generate
+dfx deploy --network ic
 ```
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+---
 
-If you are making frontend changes, you can start a development server with
+## 🤝 Contributing
 
-```bash
-npm start
-```
+1. Fork repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+---
 
-### Note on frontend environment variables
+## 📝 License
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+Distributed under the MIT License. See `LICENSE` for more information.
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+---
+
+## 👨‍💻 Author
+
+**Munra / Bombollini**
+- GitHub: [@Bombollini](https://github.com/Bombollini)
+- Project: [motoko-blackjack](https://github.com/Bombollini/motoko-blackjack)
+
+---
+
+## 🙏 Acknowledgments
+
+- [Internet Computer](https://internetcomputer.org/) - Decentralized platform
+- [Motoko](https://internetcomputer.org/docs/current/motoko/main/motoko) - Smart contract language
+- [React](https://react.dev/) - Frontend framework
+- [Vite](https://vitejs.dev/) - Build tool
+- [Lucide React](https://lucide.dev/) - Icons
